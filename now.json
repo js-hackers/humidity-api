@@ -1,0 +1,9 @@
+{
+  "version": 2,
+  "name": "weather-api",
+  "alias": "weather-api.js-hackers.now.sh",
+  "scope": "js-hackers",
+  "env": {
+    "OPENWEATHER_API_KEY": "@openweather-api-key"
+  }
+}
