@@ -7,8 +7,20 @@
     "OPENWEATHER_API_KEY": "@openweather-api-key"
   },
   "routes": [
-    {"src": "/humidity", "dest": "/api/humidity.js"},
-    {"src": "/random", "dest": "/api/random.js"},
-    {"src": "/(.*)", "status": 404, "dest": "/404.html"}
+    {
+      "src": "/humidity",
+      "methods": ["GET"],
+      "dest": "/api/humidity.js"
+    },
+    {
+      "src": "/random",
+      "methods": ["GET"],
+      "dest": "/api/random.js"
+    },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/404.html"
+    }
   ]
 }
