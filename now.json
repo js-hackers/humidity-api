@@ -6,8 +6,9 @@
   "env": {
     "OPENWEATHER_API_KEY": "@openweather-api-key"
   },
-  "routes": [
-    {"handle": "filesystem"},
-    {"src": "/(.*)", "status": 404, "dest": "/404.html"}
+  "rewrites": [
+    {"source": "/humidity", "destination": "/api/humidity"},
+    {"source": "/random", "destination": "/api/random"},
+    {"source": "/(.*)", "status": 404, "destination": "/404.html"}
   ]
 }
