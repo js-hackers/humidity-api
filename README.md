@@ -1,1 +1,1 @@
-# humidity-api
+# weather-api
