@@ -14,6 +14,7 @@ module.exports = async (req, res) => {
     const {coord: {lat, lon}, main: {humidity}, name} = response;
     const data = {
       humidity: {
+        formatted: `${humidity}%`,
         symbol: '%',
         units: 'percent',
         value: humidity,
