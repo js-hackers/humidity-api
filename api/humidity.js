@@ -10,8 +10,8 @@ module.exports = async (req, res) => {
     let {units} = req.query;
     if (![...Object.values(Units)].includes(units)) units = Units.Metric;
     const params = {...req.query, units};
-    const response = await fetchCurrentWeather(params);
-    const {coord: {lat, lon}, main: {humidity}, name} = response;
+    const responseData = await fetchCurrentWeather(params);
+    const {coord: {lat, lon}, main: {humidity}, name} = responseData;
     const data = {
       humidity: {
         formatted: `${humidity}%`,
