@@ -1,25 +1,27 @@
-const isDay = weatherData => !(
+import {ApiResponseData} from '../weather';
+
+export const isDay = (weatherData: ApiResponseData): boolean => !(
   weatherData.dt < weatherData.sunrise
   || weatherData.dt >= weatherData.sunset
 );
 
-const padTimeUnit = n => {
+export const padTimeUnit = (n: number): string => {
   const two = 2;
   return typeof n === 'number'
     ? String(n).padStart(two, '0')
     : '00';
 };
 
-const getHMS = date => {
+const getHMS = (date: Date): [number, number, number] => {
   const h = date.getUTCHours();
   const m = date.getUTCMinutes();
   const s = date.getUTCSeconds();
   return [h, m, s];
 };
 
-const get12Hour = h => {
+const get12Hour = (h: number): [number, boolean] => {
   const twelve = 12;
-  const getHour = h => {
+  const getHour = (h: number): number => {
     if (h > twelve) return h % twelve;
     if (h === 0) return twelve;
     return h;
@@ -28,10 +30,24 @@ const get12Hour = h => {
   return [h12, h >= twelve];
 };
 
-const getTimes = weatherData => {
+type TimeData = {
+  formatted: string;
+  h12: {
+    formatted: string;
+    hms: [number, number, number];
+    pm: boolean;
+  };
+  hms: [number, number, number];
+};
+
+export const getTimes = (weatherData: ApiResponseData): {
+  dt: TimeData;
+  sunrise: TimeData;
+  sunset: TimeData;
+} => {
   const {dt, sunrise, sunset, timezone} = weatherData;
 
-  const getTime = unixSeconds => {
+  const getTime = (unixSeconds: number): TimeData => {
     const msPerS = 1000;
     const adjustedSeconds = unixSeconds + timezone;
     const date = new Date(adjustedSeconds * msPerS);
@@ -53,10 +69,4 @@ const getTimes = weatherData => {
     sunrise: getTime(sunrise),
     sunset: getTime(sunset),
   };
-};
-
-module.exports = {
-  getTimes,
-  isDay,
-  padTimeUnit,
 };

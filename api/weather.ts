@@ -8,6 +8,31 @@ enum Units {
   Standard = 'standard',
 }
 
+type WeatherCondition = {
+  description: string;
+  icon: string;
+  id: number;
+  main: string;
+};
+
+export type ApiResponseData = {
+  country: string;
+  dt: number;
+  feels_like: number;
+  humidity: number;
+  lat: number;
+  lon: number;
+  name: string;
+  sunrise: number;
+  sunset: number;
+  temp_max: number;
+  temp_min: number;
+  temp: number;
+  timezone: number;
+  units: Units;
+  weather: WeatherCondition[];
+};
+
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   try {
     let unitsInput: string;

@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 export type OWMParams = {[key: string]: string};
 
-type WeatherCondtion = {
+type WeatherCondition = {
   description: string;
   icon: string;
   id: number;
@@ -30,7 +30,7 @@ type OWMCurrentWeatherData = {
     sunset: number;
   };
   timezone: number;
-  weather: WeatherCondtion[];
+  weather: WeatherCondition[];
 };
 
 export const fetchCurrentWeather =
