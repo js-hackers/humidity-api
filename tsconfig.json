@@ -1,19 +1,15 @@
 {
   "compilerOptions": {
-    "alwaysStrict": true,
     "module": "commonjs",
-    "noImplicitAny": true,
     "noImplicitReturns": true,
-    "outDir": "dist",
     "removeComments": true,
-    "strictNullChecks": true,
+    "strict": true,
     "target": "esnext",
   },
   "include": [
-    "src/**/*"
+    "api/**/*"
   ],
   "exclude": [
     "node_modules",
-    "dist"
   ]
 }

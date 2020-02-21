@@ -8,14 +8,9 @@
   },
   "routes": [
     {
-      "src": "/humidity",
+      "src": "/weather",
       "methods": ["GET"],
-      "dest": "/api/humidity.js"
-    },
-    {
-      "src": "/random",
-      "methods": ["GET"],
-      "dest": "/api/random.js"
+      "dest": "/api/weather.ts"
     },
     {
       "src": "/(.*)",
