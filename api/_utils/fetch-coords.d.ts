@@ -1,1 +1,1 @@
-export const fetchCoordinates: any;
+export declare const fetchCoordinates: (ipAddress: string) => Promise<[number, number]>;

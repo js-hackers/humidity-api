@@ -9,10 +9,9 @@ const fetchCoordinates = async ipAddress => {
       response,
     });
   }
-  const data = await response.json();
-  const {latitude: lat, longitude: lon} = data;
+  const {latitude, longitude} = await response.json();
 
-  return [lat, lon];
+  return [latitude, longitude];
 };
 
 module.exports = {fetchCoordinates};

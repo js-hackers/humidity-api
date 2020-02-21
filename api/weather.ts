@@ -43,9 +43,9 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
     if (unitsList.includes(unitsInput)) units = unitsInput as Units;
     const params: {[key: string]: string} = {...req.query, units};
     if (!params.zip && !params.q && !params.lat && !params.lon) {
-      const ip = req.headers['x-forwarded-for'];
-      const coords = await fetchCoordinates(ip);
-      [params.lat, params.lon] = coords;
+      const ip: string = req.headers['x-forwarded-for'];
+      const [lat, lon] = await fetchCoordinates(ip);
+      [params.lat, params.lon] = [String(lat), String(lon)];
     }
     const responseData = await fetchCurrentWeather(params);
     const {
@@ -53,7 +53,7 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       main: {feels_like, humidity, temp, temp_max, temp_min}, name,
       sys: {country, sunrise, sunset}, timezone, weather,
     } = responseData;
-    const data = {
+    const data: ApiResponse = {
       country,
       dt,
       feels_like,
