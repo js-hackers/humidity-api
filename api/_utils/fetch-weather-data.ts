@@ -1,6 +1,8 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
-const fetchCurrentWeather = async (params = {}) => {
+type OWMParams = {[key: string]: string};
+
+const fetchCurrentWeather = async (params = {}): Promise<> => {
   const url = new URL('https://api.openweathermap.org/data/2.5/weather');
   const searchParams = new URLSearchParams();
   searchParams.set('APPID', process.env.OPENWEATHER_API_KEY || '');
