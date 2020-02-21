@@ -1,17 +1,26 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
-const fetchCoordinates = async ipAddress => {
-  const response = await fetch(`https://ipapi.co/${ipAddress}/json/`);
-  if (!response.ok) {
-    throw Object.assign(new Error(), {
-      message: 'Fetch response not OK',
-      name: 'FetchError',
-      response,
-    });
-  }
-  const {latitude, longitude} = await response.json();
-
-  return [latitude, longitude];
+type IPLocationData = {
+  latitude: number | undefined;
+  longitude: number | undefined;
 };
 
-module.exports = {fetchCoordinates};
+export const fetchCoordinates =
+  async (ipAddress: string): Promise<[number, number]> => {
+    const response = await fetch(`https://ipapi.co/${ipAddress}/json/`);
+    if (!response.ok) {
+      throw Object.assign(new Error(), {
+        message: 'Fetch response not OK',
+        name: 'FetchError',
+        response,
+      });
+    }
+    const {latitude, longitude}: IPLocationData = await response.json();
+
+    if (
+      typeof latitude !== 'number'
+      || typeof longitude !== 'number'
+    ) throw new Error('API response not OK');
+
+    return [latitude, longitude];
+  };

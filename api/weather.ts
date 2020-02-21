@@ -1,37 +1,12 @@
+import {fetchCurrentWeather, OWMParams} from './_utils/fetch-weather-data';
 import {NowRequest, NowResponse} from '@now/node';
 import {fetchCoordinates} from './_utils/fetch-coords';
-import {fetchCurrentWeather} from './_utils/fetch-weather-data';
 
 enum Units {
   Imperial = 'imperial',
   Metric = 'metric',
   Standard = 'standard',
 }
-
-type WeatherCondtion = {
-  description: string;
-  icon: string;
-  id: number;
-  main: string;
-};
-
-type ApiResponse = {
-  country: string;
-  dt: number;
-  feels_like: number;
-  humidity: number;
-  lat: number;
-  lon: number;
-  name: string;
-  sunrise: number;
-  sunset: number;
-  temp_max: number;
-  temp_min: number;
-  temp: number;
-  timezone: number;
-  units: Units;
-  weather: WeatherCondtion[];
-};
 
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   try {
@@ -43,14 +18,13 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
     const unitsList: string[] = [...Object.values(Units)];
     if (unitsList.includes(unitsInput)) units = unitsInput as Units;
 
-    const params: {[key: string]: string} = {...req.query, units};
+    const params: OWMParams = {...req.query, units};
     if (!params.zip && !params.q && !params.lat && !params.lon) {
-      const xForwardedFor = req.headers['x-forwarded-for'];
-      if (typeof xForwardedFor !== 'string') {
+      const ipAddress = req.headers['x-forwarded-for'];
+      if (typeof ipAddress !== 'string') {
         throw new Error('No location data available');
       }
-      const ip = xForwardedFor as string;
-      const [lat, lon] = await fetchCoordinates(ip);
+      const [lat, lon] = await fetchCoordinates(ipAddress);
       [params.lat, params.lon] = [String(lat), String(lon)];
     }
 
@@ -65,7 +39,7 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       weather,
     } = responseData;
 
-    const data: ApiResponse = {
+    const data = {
       country,
       dt,
       feels_like,
