@@ -9,6 +9,7 @@
   "routes": [
     {
       "src": "/weather",
+      "headers": {"Access-Control-Allow-Origin": "*"},
       "methods": ["GET"],
       "dest": "/api/weather.ts"
     },
