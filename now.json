@@ -11,7 +11,7 @@
       "src": "/weather",
       "headers": {"Access-Control-Allow-Origin": "*"},
       "methods": ["GET"],
-      "dest": "/api/weather.js"
+      "dest": "/api/weather.ts"
     },
     {
       "src": "/(.*)",
