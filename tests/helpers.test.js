@@ -1,6 +1,3 @@
-/* eslint-env jest */
-/* eslint-disable no-magic-numbers */
-
 const {getTimes, isDay, padTimeUnit} = require('../api/_utils/helpers');
 
 describe('getTimes', () => {
