@@ -1,6 +1,6 @@
-const isDay = weatherData => !(
-  weatherData.dt < weatherData.sunrise
-  || weatherData.dt >= weatherData.sunset
+const isDay = weatherData => (
+  weatherData.dt >= weatherData.sunrise
+  && weatherData.dt < weatherData.sunset
 );
 
 const padTimeUnit = n => {
