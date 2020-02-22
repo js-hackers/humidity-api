@@ -1,6 +1,6 @@
+import {fetchCurrentWeather, OWMParams} from './_utils/open-weather-api';
 import {NowRequest, NowResponse} from '@now/node';
-import {fetchCoordinates} from './_utils/fetch-coords';
-import {fetchCurrentWeather} from './_utils/fetch-weather-data';
+import {fetchCoordinates} from './_utils/location-api';
 
 enum Units {
   Imperial = 'imperial',
@@ -8,14 +8,14 @@ enum Units {
   Standard = 'standard',
 }
 
-type WeatherCondtion = {
+type WeatherCondition = {
   description: string;
   icon: string;
   id: number;
   main: string;
 };
 
-type ApiResponse = {
+export type ApiResponseData = {
   country: string;
   dt: number;
   feels_like: number;
@@ -30,31 +30,32 @@ type ApiResponse = {
   temp: number;
   timezone: number;
   units: Units;
-  weather: WeatherCondtion[];
+  weather: WeatherCondition[];
 };
 
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   try {
     let unitsInput: string;
+
     if (Array.isArray(req.query.units)) unitsInput = req.query.units[0];
     else unitsInput = req.query.units;
 
     let units = Units.Metric;
     const unitsList: string[] = [...Object.values(Units)];
+
     if (unitsList.includes(unitsInput)) units = unitsInput as Units;
 
-    const params: {[key: string]: string} = {...req.query, units};
+    const params: OWMParams = {...req.query, units};
+
     if (!params.zip && !params.q && !params.lat && !params.lon) {
-      const xForwardedFor = req.headers['x-forwarded-for'];
-      if (typeof xForwardedFor !== 'string') {
+      const ipAddress = req.headers['x-forwarded-for'];
+      if (typeof ipAddress !== 'string') {
         throw new Error('No location data available');
       }
-      const ip = xForwardedFor as string;
-      const [lat, lon] = await fetchCoordinates(ip);
+      const [lat, lon] = await fetchCoordinates(ipAddress);
       [params.lat, params.lon] = [String(lat), String(lon)];
     }
 
-    const responseData = await fetchCurrentWeather(params);
     const {
       coord: {lat, lon},
       dt,
@@ -63,9 +64,9 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       sys: {country, sunrise, sunset},
       timezone,
       weather,
-    } = responseData;
+    } = await fetchCurrentWeather(params);
 
-    const data: ApiResponse = {
+    const data = {
       country,
       dt,
       feels_like,
