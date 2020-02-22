@@ -8,6 +8,7 @@ type IPLocationData = {
 export const fetchCoordinates =
   async (ipAddress: string): Promise<[number, number]> => {
     const response = await fetch(`https://ipapi.co/${ipAddress}/json/`);
+
     if (!response.ok) {
       throw Object.assign(new Error(), {
         message: 'Fetch response not OK',
@@ -15,6 +16,7 @@ export const fetchCoordinates =
         response,
       });
     }
+
     const {latitude, longitude}: IPLocationData = await response.json();
 
     if (

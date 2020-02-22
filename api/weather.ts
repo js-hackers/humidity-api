@@ -36,14 +36,17 @@ export type ApiResponseData = {
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
   try {
     let unitsInput: string;
+
     if (Array.isArray(req.query.units)) unitsInput = req.query.units[0];
     else unitsInput = req.query.units;
 
     let units = Units.Metric;
     const unitsList: string[] = [...Object.values(Units)];
+
     if (unitsList.includes(unitsInput)) units = unitsInput as Units;
 
     const params: OWMParams = {...req.query, units};
+
     if (!params.zip && !params.q && !params.lat && !params.lon) {
       const ipAddress = req.headers['x-forwarded-for'];
       if (typeof ipAddress !== 'string') {
@@ -53,7 +56,6 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       [params.lat, params.lon] = [String(lat), String(lon)];
     }
 
-    const responseData = await fetchCurrentWeather(params);
     const {
       coord: {lat, lon},
       dt,
@@ -62,7 +64,7 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       sys: {country, sunrise, sunset},
       timezone,
       weather,
-    } = responseData;
+    } = await fetchCurrentWeather(params);
 
     const data = {
       country,
