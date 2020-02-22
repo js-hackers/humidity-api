@@ -4,6 +4,7 @@
   "description": "",
   "type": "commonjs",
   "scripts": {
+    "lint": "eslint . --ext .ts",
     "test": "jest"
   },
   "repository": {
