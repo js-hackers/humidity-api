@@ -1,6 +1,6 @@
-import {fetchCurrentWeather, OWMParams} from './_utils/fetch-weather-data';
+import {fetchCurrentWeather, OWMParams} from './_utils/open-weather-api';
 import {NowRequest, NowResponse} from '@now/node';
-import {fetchCoordinates} from './_utils/fetch-coords';
+import {fetchCoordinates} from './_utils/location-api';
 
 enum Units {
   Imperial = 'imperial',
