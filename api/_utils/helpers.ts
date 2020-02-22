@@ -1,8 +1,8 @@
 import {ApiResponseData} from '../weather';
 
-export const isDay = (weatherData: ApiResponseData): boolean => !(
-  weatherData.dt < weatherData.sunrise
-  || weatherData.dt >= weatherData.sunset
+export const isDay = (weatherData: ApiResponseData): boolean => (
+  weatherData.dt >= weatherData.sunrise
+  && weatherData.dt < weatherData.sunset
 );
 
 export const padTimeUnit = (n: number): string => {
