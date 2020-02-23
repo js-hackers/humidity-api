@@ -1,19 +1,14 @@
-import {fetchCurrentWeather, OWMParams} from './_utils/open-weather-api';
+import {fetchCurrentWeather, OWMParams, WeatherCondition} from './_utils/open-weather-api';
 import {NowRequest, NowResponse} from '@now/node';
 import {fetchCoordinates} from './_utils/location-api';
 
-enum Units {
+export {WeatherCondition} from './_utils/open-weather-api';
+
+export enum Units {
   Imperial = 'imperial',
   Metric = 'metric',
   Standard = 'standard',
 }
-
-type WeatherCondition = {
-  description: string;
-  icon: string;
-  id: number;
-  main: string;
-};
 
 export type ApiResponseData = {
   country: string;
