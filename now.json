@@ -17,6 +17,15 @@
       "dest": "/api/current.ts"
     },
     {
+      "src": "/forecast",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "max-age=600"
+      },
+      "methods": ["GET"],
+      "dest": "/api/forecast.ts"
+    },
+    {
       "src": "/(.*)",
       "status": 404,
       "dest": "/404.html"

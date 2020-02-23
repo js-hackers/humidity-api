@@ -7,30 +7,34 @@ import {
 } from './_utils/open-weather-api';
 import {fetchCoordinates} from './_utils/location-api';
 
-export type CurrentWeatherData = {
+export type ForecastItem = {
   clouds_all: number;
-  country: string;
   dt: number;
   humidity: number;
-  lat: number;
-  lon: number;
-  name: string;
   pressure: number;
-  rain_1h: number;
+  pressure_grnd_level: number;
+  pressure_sea_level: number;
   rain_3h: number;
-  snow_1h: number;
   snow_3h: number;
-  sunrise: number;
-  sunset: number;
   temp: number;
   temp_feels_like: number;
   temp_max: number;
   temp_min: number;
-  timezone: number;
-  units: OWMUnits;
   weather: OWMWeatherCondition[];
   wind_deg: number;
   wind_speed: number;
+};
+
+export type ForecastWeatherData = {
+  country: string;
+  lat: number;
+  list: ForecastItem[];
+  lon: number;
+  name: string;
+  sunrise: number;
+  sunset: number;
+  timezone: number;
+  units: OWMUnits;
 };
 
 export default async (req: NowRequest, res: NowResponse): Promise<void> => {
@@ -56,33 +60,35 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       [params.lat, params.lon] = [String(lat), String(lon)];
     }
 
-    const {fetchCurrent} = new OpenWeather(process.env.OPENWEATHER_API_KEY || '');
-    const responseData = await fetchCurrent(params);
+    const {fetchForecast} = new OpenWeather(process.env.OPENWEATHER_API_KEY || '');
+    const responseData = await fetchForecast(params);
 
-    const data: CurrentWeatherData = {
-      clouds_all: responseData.clouds.all,
-      country: responseData.sys.country,
-      dt: responseData.dt,
-      humidity: responseData.main.humidity,
-      lat: responseData.coord.lat,
-      lon: responseData.coord.lon,
-      name: responseData.name,
-      pressure: responseData.main.pressure,
-      rain_1h: (responseData.rain && responseData.rain['1h']) || 0,
-      rain_3h: (responseData.rain && responseData.rain['3h']) || 0,
-      snow_1h: (responseData.snow && responseData.snow['1h']) || 0,
-      snow_3h: (responseData.snow && responseData.snow['3h']) || 0,
-      sunrise: responseData.sys.sunrise,
-      sunset: responseData.sys.sunset,
-      temp: responseData.main.temp,
-      temp_feels_like: responseData.main.feels_like,
-      temp_max: responseData.main.temp_max,
-      temp_min: responseData.main.temp_min,
-      timezone: responseData.timezone,
+    const data: ForecastWeatherData = {
+      country: responseData.city.country,
+      lat: responseData.city.coord.lat,
+      list: responseData.list.map(item => ({
+        clouds_all: item.clouds.all,
+        dt: item.dt,
+        humidity: item.main.humidity,
+        pressure: item.main.pressure,
+        pressure_grnd_level: item.main.grnd_level,
+        pressure_sea_level: item.main.sea_level,
+        rain_3h: (item.rain && item.rain['3h']) || 0,
+        snow_3h: (item.snow && item.snow['3h']) || 0,
+        temp: item.main.temp,
+        temp_feels_like: item.main.feels_like,
+        temp_max: item.main.temp_max,
+        temp_min: item.main.temp_min,
+        weather: item.weather,
+        wind_deg: item.wind.deg,
+        wind_speed: item.wind.speed,
+      })),
+      lon: responseData.city.coord.lon,
+      name: responseData.city.name,
+      sunrise: responseData.city.sunrise,
+      sunset: responseData.city.sunset,
+      timezone: responseData.city.timezone,
       units,
-      weather: responseData.weather,
-      wind_deg: responseData.wind.deg,
-      wind_speed: responseData.wind.speed,
     };
 
     res.json(data);
