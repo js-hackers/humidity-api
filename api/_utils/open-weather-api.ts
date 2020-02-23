@@ -10,6 +10,9 @@ export type WeatherCondition = {
 };
 
 type OWMCurrentWeatherData = {
+  clouds: {
+    all: number;
+  };
   cod: number;
   coord: {
     lat: number;
@@ -19,18 +22,32 @@ type OWMCurrentWeatherData = {
   main: {
     feels_like: number;
     humidity: number;
+    pressure: number;
     temp: number;
     temp_max: number;
     temp_min: number;
   };
   name: string;
+  rain?: {
+    '1h': number;
+    '3h': number;
+  };
+  snow?: {
+    '1h': number;
+    '3h': number;
+  };
   sys: {
     country: string;
     sunrise: number;
     sunset: number;
   };
   timezone: number;
+  visibility: number;
   weather: WeatherCondition[];
+  wind: {
+    deg: number;
+    speed: number;
+  };
 };
 
 export const fetchCurrentWeather =
