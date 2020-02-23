@@ -1,5 +1,11 @@
 import fetch from 'node-fetch';
 
+export enum Units {
+  Imperial = 'imperial',
+  Metric = 'metric',
+  Standard = 'standard',
+}
+
 export type OWMParams = {[key: string]: string};
 
 export type WeatherCondition = {
@@ -9,7 +15,7 @@ export type WeatherCondition = {
   main: string;
 };
 
-type OWMCurrentWeatherData = {
+export type OWMCurrentWeatherData = {
   clouds: {
     all: number;
   };
@@ -50,31 +56,40 @@ type OWMCurrentWeatherData = {
   };
 };
 
-export const fetchCurrentWeather =
-  async (params: OWMParams = {}): Promise<OWMCurrentWeatherData> => {
-    const url = new URL('https://api.openweathermap.org/data/2.5/weather');
-    const searchParams = new URLSearchParams();
-    searchParams.set('appid', process.env.OPENWEATHER_API_KEY || '');
+export class OpenWeather {
+  apiKey: string;
 
-    for (const [param, value] of Object.entries(params)) {
-      if (value !== '') searchParams.set(param, value);
-    }
+  constructor (apiKey: string) {
+    this.apiKey = apiKey;
+  }
 
-    url.search = searchParams.toString();
-    const response = await fetch(url.toString());
+  fetchCurrent =
+    async (params: OWMParams = {}): Promise<OWMCurrentWeatherData> => {
+      const url = new URL('https://api.openweathermap.org/data/2.5/weather');
+      const searchParams = new URLSearchParams();
+      /* eslint-disable-next-line no-invalid-this */
+      searchParams.set('appid', this.apiKey);
 
-    if (!response.ok) {
-      throw Object.assign(new Error(), {
-        message: 'Fetch response not OK',
-        name: 'FetchError',
-        response,
-      });
-    }
+      for (const [param, value] of Object.entries(params)) {
+        if (value !== '') searchParams.set(param, value);
+      }
 
-    const json: OWMCurrentWeatherData = await response.json();
-    const statusCodeOk = 200;
+      url.search = searchParams.toString();
+      const response = await fetch(url.toString());
 
-    if (json.cod !== statusCodeOk) throw new Error('API response not OK');
+      if (!response.ok) {
+        throw Object.assign(new Error(), {
+          message: 'Fetch response not OK',
+          name: 'FetchError',
+          response,
+        });
+      }
 
-    return json;
-  };
+      const json: OWMCurrentWeatherData = await response.json();
+      const statusCodeOk = 200;
+
+      if (json.cod !== statusCodeOk) throw new Error('API response not OK');
+
+      return json;
+    };
+}
