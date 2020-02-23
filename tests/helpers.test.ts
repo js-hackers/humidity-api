@@ -1,5 +1,5 @@
 import {getTimes, isDay, padTimeUnit} from '../api/_utils/helpers';
-import {ApiResponseData} from '../api/current';
+import {CurrentWeatherData} from '../api/current';
 
 describe('getTimes', () => {
   test('has the correct shape', () => {
@@ -9,7 +9,7 @@ describe('getTimes', () => {
       sunset: 1582069131,
       timezone: -21600,
     };
-    const times = getTimes(data as ApiResponseData);
+    const times = getTimes(data as CurrentWeatherData);
     const {sunrise: x} = times;
 
     expect(times.dt).not.toBeUndefined();
@@ -35,7 +35,7 @@ describe('getTimes', () => {
       sunset: 1582069131,
       timezone: -21600,
     };
-    const {sunrise, sunset} = getTimes(data as ApiResponseData);
+    const {sunrise, sunset} = getTimes(data as CurrentWeatherData);
 
     expect(sunrise.hms).toEqual([6, 27, 3]);
     expect(sunrise.h12.hms).toEqual([6, 27, 3]);
@@ -52,7 +52,7 @@ describe('getTimes', () => {
       sunset: 1582069131,
       timezone: -21600,
     };
-    const {sunrise, sunset} = getTimes(data as ApiResponseData);
+    const {sunrise, sunset} = getTimes(data as CurrentWeatherData);
 
     expect(sunrise.formatted).toBe('06:27');
     expect(sunrise.h12.formatted).toBe('6:27');
@@ -67,7 +67,7 @@ describe('isDay', () => {
       dt: 1582028822,
       sunrise: 1582028823,
       sunset: 1582069131,
-    } as ApiResponseData)).toBe(false);
+    } as CurrentWeatherData)).toBe(false);
   });
 
   test('at sunrise', () => {
@@ -75,7 +75,7 @@ describe('isDay', () => {
       dt: 1582028823,
       sunrise: 1582028823,
       sunset: 1582069131,
-    } as ApiResponseData)).toBe(true);
+    } as CurrentWeatherData)).toBe(true);
   });
 
   test('between', () => {
@@ -83,7 +83,7 @@ describe('isDay', () => {
       dt: 1582069130,
       sunrise: 1582028823,
       sunset: 1582069131,
-    } as ApiResponseData)).toBe(true);
+    } as CurrentWeatherData)).toBe(true);
   });
 
   test('not at sunset', () => {
@@ -91,7 +91,7 @@ describe('isDay', () => {
       dt: 1582069131,
       sunrise: 1582028823,
       sunset: 1582069131,
-    } as ApiResponseData)).toBe(false);
+    } as CurrentWeatherData)).toBe(false);
   });
 
   test('not after sunset', () => {
@@ -99,7 +99,7 @@ describe('isDay', () => {
       dt: 1582069132,
       sunrise: 1582028823,
       sunset: 1582069131,
-    } as ApiResponseData)).toBe(false);
+    } as CurrentWeatherData)).toBe(false);
   });
 });
 

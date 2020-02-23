@@ -1,6 +1,6 @@
-import {ApiResponseData} from '../current';
+import {CurrentWeatherData} from '../current';
 
-export const isDay = (weatherData: ApiResponseData): boolean => (
+export const isDay = (weatherData: CurrentWeatherData): boolean => (
   weatherData.dt >= weatherData.sunrise
   && weatherData.dt < weatherData.sunset
 );
@@ -40,7 +40,7 @@ type TimeData = {
   hms: [number, number, number];
 };
 
-export const getTimes = (weatherData: ApiResponseData): {
+export const getTimes = (weatherData: CurrentWeatherData): {
   dt: TimeData;
   sunrise: TimeData;
   sunset: TimeData;

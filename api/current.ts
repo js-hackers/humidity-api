@@ -10,7 +10,7 @@ export enum Units {
   Standard = 'standard',
 }
 
-export type ApiResponseData = {
+export type CurrentWeatherData = {
   country: string;
   dt: number;
   feels_like: number;
