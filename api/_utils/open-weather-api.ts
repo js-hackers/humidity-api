@@ -63,31 +63,33 @@ export class OpenWeather {
     this.apiKey = apiKey;
   }
 
-  async fetchCurrent (params: OWMParams = {}): Promise<OWMCurrentWeatherData> {
-    const url = new URL('https://api.openweathermap.org/data/2.5/weather');
-    const searchParams = new URLSearchParams();
-    searchParams.set('appid', this.apiKey);
+  fetchCurrent =
+    async (params: OWMParams = {}): Promise<OWMCurrentWeatherData> => {
+      const url = new URL('https://api.openweathermap.org/data/2.5/weather');
+      const searchParams = new URLSearchParams();
+      /* eslint-disable-next-line no-invalid-this */
+      searchParams.set('appid', this.apiKey);
 
-    for (const [param, value] of Object.entries(params)) {
-      if (value !== '') searchParams.set(param, value);
-    }
+      for (const [param, value] of Object.entries(params)) {
+        if (value !== '') searchParams.set(param, value);
+      }
 
-    url.search = searchParams.toString();
-    const response = await fetch(url.toString());
+      url.search = searchParams.toString();
+      const response = await fetch(url.toString());
 
-    if (!response.ok) {
-      throw Object.assign(new Error(), {
-        message: 'Fetch response not OK',
-        name: 'FetchError',
-        response,
-      });
-    }
+      if (!response.ok) {
+        throw Object.assign(new Error(), {
+          message: 'Fetch response not OK',
+          name: 'FetchError',
+          response,
+        });
+      }
 
-    const json: OWMCurrentWeatherData = await response.json();
-    const statusCodeOk = 200;
+      const json: OWMCurrentWeatherData = await response.json();
+      const statusCodeOk = 200;
 
-    if (json.cod !== statusCodeOk) throw new Error('API response not OK');
+      if (json.cod !== statusCodeOk) throw new Error('API response not OK');
 
-    return json;
-  }
+      return json;
+    };
 }
