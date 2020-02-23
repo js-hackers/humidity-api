@@ -1,5 +1,11 @@
 import fetch from 'node-fetch';
 
+export enum Units {
+  Imperial = 'imperial',
+  Metric = 'metric',
+  Standard = 'standard',
+}
+
 export type OWMParams = {[key: string]: string};
 
 export type WeatherCondition = {
@@ -9,7 +15,7 @@ export type WeatherCondition = {
   main: string;
 };
 
-type OWMCurrentWeatherData = {
+export type OWMCurrentWeatherData = {
   clouds: {
     all: number;
   };
@@ -50,11 +56,17 @@ type OWMCurrentWeatherData = {
   };
 };
 
-export const fetchCurrentWeather =
-  async (params: OWMParams = {}): Promise<OWMCurrentWeatherData> => {
+export class OpenWeather {
+  apiKey: string;
+
+  constructor (apiKey: string) {
+    this.apiKey = apiKey;
+  }
+
+  async fetchCurrent (params: OWMParams = {}): Promise<OWMCurrentWeatherData> {
     const url = new URL('https://api.openweathermap.org/data/2.5/weather');
     const searchParams = new URLSearchParams();
-    searchParams.set('appid', process.env.OPENWEATHER_API_KEY || '');
+    searchParams.set('appid', this.apiKey);
 
     for (const [param, value] of Object.entries(params)) {
       if (value !== '') searchParams.set(param, value);
@@ -77,4 +89,5 @@ export const fetchCurrentWeather =
     if (json.cod !== statusCodeOk) throw new Error('API response not OK');
 
     return json;
-  };
+  }
+}

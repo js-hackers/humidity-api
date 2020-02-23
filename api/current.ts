@@ -1,14 +1,13 @@
-import {fetchCurrentWeather, OWMParams, WeatherCondition} from './_utils/open-weather-api';
 import {NowRequest, NowResponse} from '@now/node';
+import {
+  OpenWeather,
+  OWMParams,
+  Units,
+  WeatherCondition,
+} from './_utils/open-weather-api';
 import {fetchCoordinates} from './_utils/location-api';
 
 export {WeatherCondition} from './_utils/open-weather-api';
-
-export enum Units {
-  Imperial = 'imperial',
-  Metric = 'metric',
-  Standard = 'standard',
-}
 
 export type CurrentWeatherData = {
   clouds_all: number;
@@ -59,7 +58,8 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
       [params.lat, params.lon] = [String(lat), String(lon)];
     }
 
-    const responseData = await fetchCurrentWeather(params);
+    const {fetchCurrent} = new OpenWeather(process.env.OPENWEATHER_API_KEY || '');
+    const responseData = await fetchCurrent(params);
 
     const data: CurrentWeatherData = {
       clouds_all: responseData.clouds.all,
