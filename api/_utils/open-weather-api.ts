@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 export type OWMParams = {[key: string]: string};
 
-type WeatherCondition = {
+export type WeatherCondition = {
   description: string;
   icon: string;
   id: number;
@@ -37,7 +37,7 @@ export const fetchCurrentWeather =
   async (params: OWMParams = {}): Promise<OWMCurrentWeatherData> => {
     const url = new URL('https://api.openweathermap.org/data/2.5/weather');
     const searchParams = new URLSearchParams();
-    searchParams.set('APPID', process.env.OPENWEATHER_API_KEY || '');
+    searchParams.set('appid', process.env.OPENWEATHER_API_KEY || '');
 
     for (const [param, value] of Object.entries(params)) {
       if (value !== '') searchParams.set(param, value);
