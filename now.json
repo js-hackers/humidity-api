@@ -8,13 +8,13 @@
   },
   "routes": [
     {
-      "src": "/weather",
+      "src": "/current",
       "headers": {
         "Access-Control-Allow-Origin": "*",
         "Cache-Control": "max-age=600"
       },
       "methods": ["GET"],
-      "dest": "/api/weather.ts"
+      "dest": "/api/current.ts"
     },
     {
       "src": "/(.*)",

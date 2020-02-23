@@ -1,4 +1,4 @@
-import {ApiResponseData} from '../weather';
+import {ApiResponseData} from '../current';
 
 export const isDay = (weatherData: ApiResponseData): boolean => (
   weatherData.dt >= weatherData.sunrise

@@ -1,5 +1,5 @@
 import {getTimes, isDay, padTimeUnit} from '../api/_utils/helpers';
-import {ApiResponseData} from '../api/weather';
+import {ApiResponseData} from '../api/current';
 
 describe('getTimes', () => {
   test('has the correct shape', () => {
