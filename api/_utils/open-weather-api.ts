@@ -19,7 +19,7 @@ export type OWMCurrentWeatherData = {
   clouds: {
     all: number;
   };
-  cod: number;
+  cod: number | string;
   coord: {
     lat: number;
     lon: number;
@@ -98,7 +98,7 @@ export type OWMForecastWeatherData = {
     timezone: number;
   };
   cnt: number;
-  cod: number;
+  cod: number | string;
   list: OWMForecastItem[];
 };
 
@@ -134,7 +134,10 @@ export class OpenWeather {
       const json: OWMCurrentWeatherData = await response.json();
       const statusCodeOk = 200;
 
-      if (json.cod !== statusCodeOk) throw new Error('API response not OK');
+      if (
+        json.cod !== statusCodeOk
+        && json.cod !== '200'
+      ) throw new Error('API response not OK');
 
       return json;
     };
@@ -164,7 +167,10 @@ export class OpenWeather {
       const json: OWMForecastWeatherData = await response.json();
       const statusCodeOk = 200;
 
-      if (json.cod !== statusCodeOk) throw new Error('API response not OK');
+      if (
+        json.cod !== statusCodeOk
+        && json.cod !== '200'
+      ) throw new Error('API response not OK');
 
       return json;
     };
