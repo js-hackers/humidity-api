@@ -26,6 +26,15 @@
       "dest": "/api/forecast.ts"
     },
     {
+      "src": "/weather",
+      "headers": {
+        "Access-Control-Allow-Origin": "*",
+        "Cache-Control": "max-age=600"
+      },
+      "methods": ["GET"],
+      "dest": "/api/weather.ts"
+    },
+    {
       "src": "/(.*)",
       "status": 404,
       "dest": "/404.html"
