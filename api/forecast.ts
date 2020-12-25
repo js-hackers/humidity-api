@@ -93,7 +93,8 @@ export default async (req: NowRequest, res: NowResponse): Promise<void> => {
 
     res.json(data);
   }
-  catch (err) {
+  catch (ex: unknown) {
+    console.error(ex);
     const statusCode = 500;
     res.status(statusCode).end();
   }
