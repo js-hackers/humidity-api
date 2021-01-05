@@ -7,7 +7,7 @@ type IPLocationData = {
 
 export const fetchCoordinates =
   async (ipAddress: string): Promise<[number, number]> => {
-    const response = await fetch(`https://ipapi.co/${ipAddress}/json/`);
+    const response = await fetch(`https://api.ipstack.com/${ipAddress}?access_key=${process.env.IPSTACK_API_KEY}`);
 
     if (!response.ok) {
       throw Object.assign(new Error(), {
