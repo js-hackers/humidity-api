@@ -4,6 +4,7 @@
   "alias": "weather-api.js-hackers.now.sh",
   "scope": "js-hackers",
   "env": {
+    "IPSTACK_API_KEY": "@ipstack-api-key",
     "OPENWEATHER_API_KEY": "@openweather-api-key"
   },
   "routes": [
