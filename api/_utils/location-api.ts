@@ -112,6 +112,7 @@ export const fetchCoordinates =
     }
     catch (ex) {
       errors.push(ex);
+      console.error(ex);
     }
 
     if (typeof latitude === 'number' && typeof longitude === 'number') {
@@ -134,6 +135,7 @@ export const fetchCoordinates =
       }
       catch (ex) {
         errors.push(ex);
+        console.error(ex);
       }
     }
 
@@ -159,6 +161,7 @@ export const fetchCoordinates =
     // }
     // catch (ex) {
     //   errors.push(ex);
+    //   console.error(ex);
     // }
 
     // if (typeof latitude === 'number' && typeof longitude === 'number') {
